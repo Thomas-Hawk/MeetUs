@@ -1,0 +1,92 @@
+{% extends "base.html"%}
+
+{% block content %}
+          
+<h2>Event Details</h2>
+<p>Event Name: {{ event.eventname }}</p>
+<p>Created At: {{ event.created_at }}</p>
+
+<!--<h2>Nombre de questions par invité ? </h2>
+    <form action="">
+        <input type="range" id="quantitySlider" min="1" max="4" value="1" step="1" oninput="updateQuantity()">
+        <div id="quantityValue">Quantité de questions : 1</div>
+
+    </form>-->
+
+<h4>Invité ajouté</h4>
+
+{% if guests %}
+{% for guest in guests %}
+<div id="guest">
+    <form action="{{url_for('update_guest',event_id=event.id, guest_id=guest.id)}}" method="post">
+        <input type="text" name="fname" placeholder="Nom" value="{{guest.fname}}">
+        <input type="text" name="lname" placeholder="Prenom" value="{{guest.lname}}">
+        <input type="text" name="job" placeholder="Job" value="{{guest.job}}">
+        <input type="text" name="age" placeholder="Age" value="{{guest.age}}">
+        <input type="text" name="sex" placeholder="Sexe" value="{{guest.sex}}">
+        <input type="text" name="hobby_1" placeholder="Hobby 1" value="{{guest.hobby_1}}">
+        <input type="text" name="hobby_2" placeholder="Hobby 2" value="{{guest.hobby_2}}">
+        <input type="text" name="hobby_3" placeholder="Hobby 3" value="{{guest.hobby_3}}">
+        <input type="submit" value="Modifier">
+    </form>
+    <br>
+
+    <form action="">
+        <div class="questionInputs">
+            <input type="text" name="question1" placeholder="Question 1">
+            <input type="text" name="question2" placeholder="Question 2">
+            <input type="text" name="question3" placeholder="Question 3">
+            <input type="submit" value="Refresh"> 
+        </div>
+    </form>
+
+    <a href="{{ url_for('delete_guest', event_id=event.id, guest_id=guest.id) }}">Supprimer </a>
+    <a href="{{ url_for('guest_friends', event_id=event.id, guest_id=guest.id) }}">Connaissances </a>
+    <br>   <br>
+</div>
+{% endfor %}
+{% else %}
+<p style="font-size: 16px; text-align: center;">Vous n'avez encore aucun d'invité</p>
+{% endif %}
+<h4>Ajouter un invité</h4>
+<form action="{{url_for('creat_guest',event_id=event.id)}}" method="post">
+    <input type="text" name="fname" placeholder="Nom">
+    <input type="text" name="lname" placeholder="Prenom">
+    <input type="text" name="job" placeholder="Job">
+    <input type="text" name="age" placeholder="Age">
+    <input type="text" name="sex" placeholder="Sexe">
+    <input type="text" name="hobby_1" placeholder="Hobby 1">
+    <input type="text" name="hobby_2" placeholder="Hobby 2">
+    <input type="text" name="hobby_3" placeholder="Hobby 3">
+    <input type="submit" value="Valider">
+</form>
+
+<!--<script>
+  //  function updateQuantity() {
+        var slider = document.getElementById("quantitySlider");
+        var valueDisplay = document.getElementById("quantityValue");
+        var questionInputsContainer = document.getElementsByClassName("questionInputs");
+
+        var quantity = slider.value;
+        valueDisplay.innerHTML = "Quantité de Questions : " + quantity;
+
+        // Vous pouvez utiliser la valeur de 'quantity' pour effectuer des actions supplémentaires ici
+        // Parcourir tous les éléments avec la classe 'questionInputs'
+        for (var j = 0; j < questionInputsContainer.length; j++) {
+            // Supprimer les champs de texte existants
+            questionInputsContainer[j].innerHTML = "";
+
+            // Ajouter de nouveaux champs de texte en fonction de la quantité
+            for (var i = 0; i < quantity; i++) {
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "question" + (i + 1);  // Nom unique pour chaque champ
+                input.placeholder = "Question " + (i + 1);
+                questionInputsContainer[j].appendChild(input);
+            }
+        }
+    }
+</script>-->
+
+{% endblock%}
+

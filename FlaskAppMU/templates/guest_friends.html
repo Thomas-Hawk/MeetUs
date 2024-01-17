@@ -1,0 +1,47 @@
+{% extends "base.html"%}
+
+{% block content %}
+
+    <h2>L'invité {{guest.fname}} connait qui ?</h2>
+
+    {% if guests %}
+
+        {% for friend in guests %}
+        <input type="checkbox" {% if friend.id in knowledges %}checked{% endif %}  friend_id="{{ friend.id }}">
+        <label>{{friend.fname}} {{friend.lname}}  </label>
+        <br>
+           
+            
+        {% endfor %}
+
+    {% endif %}
+ 
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('input[type="checkbox"]').change(function() {
+                var friendid = $(this).attr('friend_id');
+                var userid = "{{guest.id}}";
+                
+                //var isChecked = $(this).is(':checked');
+                //console.log('Checkbox ' + friendid + userid+(isChecked ? ' cochée' : ' décochée'));
+    
+                $.ajax({
+                    url: '/whoknowwho' ,
+                    type: 'POST',
+                    data: { userid, friendid },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.error('Erreur lors de la requête AJAX :', error);
+                    }
+                });
+            });
+        });
+    </script>
+    
+
+{% endblock%}
+
